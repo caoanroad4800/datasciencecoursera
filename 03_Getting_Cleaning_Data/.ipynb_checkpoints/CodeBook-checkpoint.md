@@ -4,22 +4,8 @@ Author: Yanyuan Zhu
 ## Description
 This is the assignment of **Getting and Cleaning Data Project**, as required by Johns Hopkins online course: Data Science Module 3.
 
-## Dataset info
-The experiments have been carried out with a group of 30 volunteers within an age bracket of 19-48 years. Each person performed six activities (WALKING, WALKING_UPSTAIRS, WALKING_DOWNSTAIRS, SITTING, STANDING, LAYING) wearing a smartphone (Samsung Galaxy S II) on the waist. Using its embedded accelerometer and gyroscope, we captured 3-axial linear acceleration and 3-axial angular velocity at a constant rate of 50Hz. The experiments have been video-recorded to label the data manually. The obtained dataset has been randomly partitioned into two sets, where 70% of the volunteers was selected for generating the training data and 30% the test data. 
-
-The sensor signals (accelerometer and gyroscope) were pre-processed by applying noise filters and then sampled in fixed-width sliding windows of 2.56 sec and 50% overlap (128 readings/window). The sensor acceleration signal, which has gravitational and body motion components, was separated using a Butterworth low-pass filter into body acceleration and gravity. The gravitational force is assumed to have only low frequency components, therefore a filter with 0.3 Hz cutoff frequency was used. From each window, a vector of features was obtained by calculating variables from the time and frequency domain.
-
-## Attribute Information
-For each record in the dataset it is provided: 
-- Triaxial acceleration from the accelerometer (total acceleration) and the estimated body acceleration. 
-- Triaxial Angular velocity from the gyroscope. 
-- A 561-feature vector with time and frequency domain variables. 
-- Its activity label. 
-- An identifier of the subject who carried out the experiment.
-
-## Refer to README.md for implementation instructions
-1. Merges the training and the test sets to create one data set.
-1. Extracts only the measurements on the mean and standard deviation for each measurement.
-1. Uses descriptive activity names to name the activities in the data set
-1. Appropriately labels the data set with descriptive variable names.
-1. From the data set in step 4, creates a second, independent tidy data set with the average of each variable for each activity and each subject.
+## Goal & Assignment of the Project
+1. [A tidy data set](https://github.com/caoanroad4800/datasciencecoursera/blob/master/03_Getting_Cleaning_Data/data/UCI%20HAR%20Dataset/tidyData.txt)
+2. [A link to a Github repository with your script for performing the analysis](https://github.com/caoanroad4800/datasciencecoursera/tree/master/03_Getting_Cleaning_Data)
+3. A [code book](https://github.com/caoanroad4800/datasciencecoursera/blob/master/03_Getting_Cleaning_Data/CodeBook.md) that describes the variables, the data, and any transformations or work that you performed to clean up the data called CodeBook.md. You should also include a README.md in the repo with your scripts. This repo explains how all of the scripts work and how they are connected.
+4. [Analysis R Script](https://github.com/caoanroad4800/datasciencecoursera/blob/master/03_Getting_Cleaning_Data/Data_get_clean_week_4_Assignment.R)

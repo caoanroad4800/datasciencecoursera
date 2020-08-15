@@ -1,0 +1,247 @@
+---
+title: "Peer-graded Assignment: Course Project 2"
+author: "Yanyuan Zhu"
+#output: html_document
+output: md_document
+---
+## 1. Questions & Answers
+- Across the United States, which types of events (as indicated in the EVTYPE variable) are most harmful with respect to population health?
+    - **Tornados have caused greated number of fatalities (5,633) and injuries (91,347)**
+- Across the United States, which types of events have the greatest economic consequences?
+    - **Floods have caused the most significant damage 144.7 Billion USD, followd by HURRICANE/TYPHOON with 69.3 Billion USD damage**
+
+## 2. Data Processing
+### 2.1 Environment
+
+```{r echo = TRUE}
+setwd("~/Soft/Rtest/datasciencecoursera/05_Reproducible_Research/")
+library("data.table")
+library("ggplot2")
+```
+
+### 2.2 Data download
+```{r echo = TRUE}
+# defile the url
+#fileUrl <- "https://d396qusza40orc.cloudfront.net/repdata%2Fdata%2FStormData.csv.bz2"
+# download the file into ./data/
+#download.file(fileUrl, destfile = "./data/repdata_data_StormData.csv.bz2")
+```
+
+read the `csv.bz2` file, rename as `storm`
+```{r echo = TRUE}
+# load data frame
+storm <- read.csv("./data/repdata_data_StormData.csv.bz2")
+head(storm)
+```
+
+```{r echo = TRUE}
+# shape of data frame
+dim(storm) # 902297 x 37
+```
+
+```{r echo = TRUE}
+str(storm)
+```
+
+```{r echo = TRUE}
+# event types
+length(unique(storm$EVTYPE)) # 985 event types
+```
+
+According to the [Storm Data Documentation](https://d396qusza40orc.cloudfront.net/repdata%2Fpeer2_doc%2Fpd01016005curr.pdf), the health variables include `FATALITIES` and `INJURIES`. with datamage to property `PROPDMG` and to crops `CROPDMG` We narrow down the column numbers to accelerate following analytics
+
+### 2.3 Data subset
+
+```{r echo = TRUE}
+colList <- c("EVTYPE"
+             , "FATALITIES"
+             , "INJURIES"
+             , "PROPDMG"
+             , "PROPDMGEXP"
+             , "CROPDMG"
+             , "CROPDMGEXP"
+)
+storm <- storm[, colList]
+head(storm)
+```
+
+There is 1 observation with `ENVTYPE == "?"` which should be removed as well
+```{r echo = TRUE}
+# sum(storm$EVTYPE=="?") # 1
+# storm[(storm$EVTYPE=="?"), ] # may be due to measurement error
+#storm <- 
+storm <- storm[(storm$EVTYPE!="?"), ]
+```
+
+We see the following 4 columns have zero values (lucily there are no negative values), meaning it caused no harm to population health, and are also removed by rows
+
+### 2.4 Missing values
+```{r echo = TRUE}
+summary(storm$INJURIES)
+summary(storm$FATALITIES)
+summary(storm$PROPDMG)
+summary(storm$CROPDMG)
+```
+
+```{r echo = TRUE}
+storm <- storm[(storm$INJURIES > 0 | storm$FATALITIES > 0 | storm$PROPDMG > 0 | storm$CROPDMG > 0),]
+dim(storm) # (902297x37) --> (254632x7)
+head(storm)
+```
+
+
+### 2.5 -EXP column conversions
+
+Change PROPDMGEXP and CROPDMG columns into upper case
+
+```{r echo = TRUE}
+storm$PROPDMGEXP <- toupper(storm$PROPDMGEXP)
+storm$CROPDMGEXP <- toupper(storm$CROPDMGEXP)
+```
+Check if they are all upper case now
+```{r echo = TRUE}
+unique(storm$PROPDMGEXP)
+```
+
+```{r echo = TRUE}
+unique(storm$CROPDMGEXP)
+```
+
+Map property damage alphanumeric exponents to numeric values
+```{r echo = TRUE}
+propDmgKey <-  c("\"\"" = 10^0,
+                 "-" = 10^0, 
+                 "+" = 10^0,
+                 "0" = 10^0,
+                 "1" = 10^1,
+                 "2" = 10^2,
+                 "3" = 10^3,
+                 "4" = 10^4,
+                 "5" = 10^5,
+                 "6" = 10^6,
+                 "7" = 10^7,
+                 "8" = 10^8,
+                 "9" = 10^9,
+                 "H" = 10^2,
+                 "K" = 10^3,
+                 "M" = 10^6,
+                 "B" = 10^9)
+storm$PROPDMGEXP <- propDmgKey[as.character(storm$PROPDMGEXP)]
+storm[is.na(storm[,'PROPDMGEXP']),'PROPDMGEXP'] <- 10^0
+```
+
+Map crop damage alphanumeric exponents to numeric values
+```{r echo = TRUE}
+cropDmgKey <-  c("\"\"" = 10^0,
+                "?" = 10^0, 
+                "0" = 10^0,
+                "K" = 10^3,
+                "M" = 10^6,
+                "B" = 10^9)
+storm$CROPDMGEXP <- cropDmgKey[as.character(storm$CROPDMGEXP)]
+storm[is.na(storm[,'CROPDMGEXP']),'CROPDMGEXP'] <- 10^0
+```
+### 2.6 Calculate economic cost for property and crop
+
+```{r echo = TRUE}
+## add 2 new columns in storm
+## propCost = PROPDMG * PROPDMGEXP
+## cropCost = CROPDMG * CROPDMGEXP
+storm$propCost = storm$PROPDMG * storm$PROPDMGEXP
+storm$cropCost = storm$CROPDMG * storm$CROPDMGEXP
+head(storm)
+```
+
+Calculate cost by EVTYPE
+```{r echo = TRUE}
+storm <- as.data.table(storm)
+storm <- storm[, .(EVTYPE
+          , FATALITIES
+          , INJURIES
+          , PROPDMG
+          , PROPDMGEXP
+          , propCost = PROPDMG * PROPDMGEXP
+          , cropCost = CROPDMG * CROPDMGEXP
+         )]
+```
+
+```{r echo = TRUE}
+#storm <- as.data.table(storm)
+totalCostDT <- storm[, .(propCost = sum(propCost)
+                     , cropCost = sum(cropCost)
+                     , totalCost = sum(propCost) + sum(cropCost)
+                     ), by = .(EVTYPE)]
+totalCostDT <- totalCostDT[order(-totalCost),]
+totalCostDT <- totalCostDT[1:10, ]
+head(totalCostDT)
+```
+
+###  2.7 Calculate total fatalities and injuries
+```{r echo = TRUE}
+totalFatalitiesDT <- storm[, .(FATALITIES = sum(FATALITIES)
+                             , INJURIES = sum(INJURIES)
+                             , totalS = sum(FATALITIES) + sum(INJURIES))
+                          , by = .(EVTYPE)]
+totalFatalitiesDT <- totalFatalitiesDT[order(-FATALITIES)]
+totalFatalitiesDT <- totalFatalitiesDT[1:10,]
+head(totalFatalitiesDT)
+```
+
+```{r echo = TRUE}
+totalFatalitiesDT[EVTYPE == "TORNADO",]
+```
+
+## 3. Answers
+### 3.1 Across the United States, which types of events (as indicated in the EVTYPE variable) are most harmful with respect to population health?
+```{r echo = TRUE}
+#?melt
+harmful_events <- melt(
+    totalFatalitiesDT
+    , id.vars = 'EVTYPE'
+    , variable.name = "harm"
+)
+head(harmful_events)
+```
+
+```{r echo = TRUE}
+str(harmful_events)
+```
+
+```{r echo = TRUE}
+str(harmful_events$harm)
+```
+
+```{r echo = TRUE}
+g <- ggplot(data = harmful_events
+           , aes(x = reorder(EVTYPE, -value)
+                , y = value)
+           )
+g <- g + geom_bar(
+    color = "black"
+    , stat = 'identity'
+    , fill = "steelblue"
+    , position = 'dodge'
+)
+g <- g + xlab("Event type") + ylab("Frequency count")
+g <- g + ggtitle("Total Number of fatalities, 1950 - 2011")
+g <- g + theme(axis.text.x = element_text(angle = 90, hjust = 1))
+g
+```
+
+### 3.2 Across the United States, which types of events (as indicated in the EVTYPE variable) are most harmful with respect to population health?
+
+```{r echo = TRUE}
+econ_consequences <- melt(totalCostDT, id.vars = 'EVTYPE', variable.name = "Damage_Type")
+head(econ_consequences)
+```
+
+
+```{r echo = TRUE}
+g <- NULL
+g <- ggplot(data = econ_consequences, aes(x = reorder(EVTYPE, -value), y = value))
+g <- g + geom_bar(stat = 'identity', fill = 'red', position = "dodge")
+g <- g + xlab("Event type") + ylab("Total damage (USD)")
+g <- g + ggtitle("Total economic damage, 1950-2011, USD")
+g <- g + theme(axis.text.x = element_text(angle = 90, hjust = 1))
+g
+```

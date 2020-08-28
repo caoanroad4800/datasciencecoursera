@@ -1,0 +1,87 @@
+---
+title: "Regression_Models_Course_Project"
+author: "Yanyuan Zhu"
+date: "Aug 28, 2020"
+output:
+  pdf_document: default
+  html_document: default
+---
+### Question
+You work for *Motor Trend*, a magazine about the automobile industry. Looking at a data set of a collection of cars, they are interested in exploring the relationship between a set of variables and miles per gallon (MPG) (outcome). They are particularly interested in the following two questions:
+
+- “Is an automatic or manual transmission better for MPG”
+- "Quantify the MPG difference between automatic and manual transmissions"
+
+### Quick answers
+- An manual transmission better for MPG
+- Weight and drive speed affect mpg
+    - Weight increase leads to mpg decrease
+        - With weight increase 1000 lbs, the mpg decease by about 4 for automatic cars, and about 6 for manual cars
+    - Drive speed increase ledas to mpg increase
+        - With speed increase 1 second per 1/4 mile, the mpg increase about 0.8 for automatic cars, and about 1.4 for manual cars
+
+### Enviroment settings
+
+
+```{r, echo = TRUE}
+library(car)
+data(mtcars)
+head(mtcars)
+```
+
+And each column class is following
+
+```{r, echo = TRUE}
+str(mtcars)
+```
+### EDA
+
+There are 10 variables that may effect dependent variable `mpg`,we first check the correlations
+
+```{r, echo = TRUE}
+cor(mtcars$mpg, mtcars[,-1])
+```
+
+So that for the 10 independent variables
+- 5 may be positively related, including drat, qsec, vs, am, gear
+- 5 may be negatively related, including cyl, disp, hp, wt, carb
+
+### Which transmission is better for MPG
+
+We need to change `am` class from numeric to factor
+
+Besides, check column meanings using `?mtcars`, we see am=0 denotes automatic transmission, and am=1 for manual transmission
+
+```{r, echo = TRUE}
+mtcars$am = factor(mtcars$am)
+levels(mtcars$am) <- c("Automatic", "Manual")
+```
+
+Conclusion: A box plot with transmission type in x axis and mpg in y axis shows that in genral, the **manual type autos drive more miles per gallon.**
+
+```{r, echo = TRUE}
+boxplot(mtcars$mpg ~ mtcars$am, data = mtcars, xlab="transmission type", ylab="miles per gallon", main = "mpg analysis by transmission type")
+```
+
+### MPG difference between automatic and manual transmissions - Quantify analysis
+
+```{r, echo = TRUE}
+fit <-  step(lm(mpg ~ . , data = mtcars), trace = 0, steps = 10000)
+summary(fit)
+```
+
+So that we get 3 out of 10 independent variables of importance to mpg change: wt, qsec, and am, with $R^2 = 0.85$
+
+Furthermore, we examine mpg ~ wt + qest correlation with am
+
+```{r, echo = TRUE}
+fit2 <- lm(mpg ~ am:wt + am:qsec, data = mtcars)
+summary(fit2)
+```
+
+With total $R^2$ of 90%, all the coefficients are significant, and we have the following conclusions
+
+- Weight increase leads to mpg decrease
+    - With weight increase 1000 lbs, the mpg decease by about 4 for automatic cars, and about 6 for manual cars
+- Drive speed increase ledas to mpg increase
+    - With speed increase 1 second per 1/4 mile, the mpg increase about 0.8 for automatic cars, and about 1.4 for manual cars

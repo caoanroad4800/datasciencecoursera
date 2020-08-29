@@ -1,10 +1,17 @@
 ---
 title: "Regression_Models_Course_Project"
+<<<<<<< HEAD
 author: "Yanyuan Zhu"
 date: "Aug 28, 2020"
 output:
   pdf_document: default
   html_document: default
+=======
+author: Yanyuan Zhu
+date: Aug 28, 2020
+#output: md_document
+output: html_document
+>>>>>>> 86b575f69760b0347a9b3d38e285faadd56bd213
 ---
 ### Question
 You work for *Motor Trend*, a magazine about the automobile industry. Looking at a data set of a collection of cars, they are interested in exploring the relationship between a set of variables and miles per gallon (MPG) (outcome). They are particularly interested in the following two questions:

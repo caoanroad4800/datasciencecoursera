@@ -1,0 +1,161 @@
+---
+title: 'Peer-graded Assignment: Prediction Assignment Writeup'
+author: "Yanyuan Zhu"
+date: "9/4/2020"
+output:
+  pdf_document: default
+  html_document: default
+---
+
+### 1. Introduction
+The goal of your project is to predict the manner in which they did the exercise. This is the "classe" variable in the training set. You may use any of the other variables to predict with. You should create a report describing how you built your model, how you used cross validation, what you think the expected out of sample error is, and why you made the choices you did. You will also use your prediction model to predict 20 different test cases.
+
+### 2. Preprocessing
+
+```{r, echo = TRUE}
+# set working directory
+setwd("/home/yanyuan/Soft/Rtest/datasciencecoursera/08_Practical_Machine_Learning/")
+
+# load the requied packages
+library(caret)
+library(rattle)
+
+# Read and pre-process datasets
+# download the related data before run the following commands
+training <- read.csv("./data/pml-training.csv", na.strings = c("NA", ""))
+testing <- read.csv("./data/pml-testing.csv", na.strings = c("NA", ""))
+
+## EDA
+dim(training); dim(testing)
+```
+
+There are 19622 observations in training set, 20 in trainingset. In both sets, there are 160 variables to be analyzed, in which `classe` is the outcome.
+
+```{r, echo=TRUE}
+unique(training$classe)
+```
+
+5 fashions are included in the `classe` variable
+- `Class A`: exactly according to the specification
+- `Class B`: throwing the elbows to the front
+- `Class C`: lifting the dumbbell only halfway
+- `Class D`: lowering the dumbbell only halfway
+- `Class E`:throwing the hips to the front
+
+Class A corresponds to the specified execution of the exercise, while the other 4 classes correspond to common mistakes.
+
+```{r, echo = TRUE}
+# str(training)
+# head(training)
+head(training)
+```
+
+Remove the first 7 columns which are irrelevant for analysis
+```{r, echo = TRUE}
+training <- training[,-c(1:7)]
+testing <- testing[, -c(1:7)]
+```
+
+```{r, echo = TRUE}
+head(training)
+```
+
+There are so many items with NA values, which are supposed to be deleted
+```{r, echo = TRUE}
+name_list <- names(training)[!colSums(is.na(training))>0]
+# name_list
+training <- training[,name_list]
+dim(training)
+```
+
+With train-test-split already finished, we furthermore split training set into training and cross validation sets accordingly
+
+```{r, echo = TRUE}
+set.seed(7826)
+inTrain <- createDataPartition(y = training$classe
+                              , p = 0.7
+                              , list = FALSE
+                              )
+validation <- training[-inTrain, ]
+training <- training[inTrain, ]
+```
+
+```{r, echo = TRUE}
+dim(training); dim(validation); dim(testing)
+# dim(training)[1] + dim(validation)[1] + dim(testing)[1] == 19642 # TRUE
+```
+
+Change classe type from chr to factor
+```{r, echo = TRUE}
+# str(validation$classe)
+training$classe <- factor(training$classe)
+validation$classe <- factor(validation$classe)
+# testing$classe <- factor(testing$classe)
+```
+
+
+## 3. Modelling
+
+We set up 2 modelling algorithms: classification trees, and random forests, to predict the outcome
+
+### 3.1 Classification Trees
+
+Set $k=5$ for k-fold cors validation
+
+```{r, echo = TRUE}
+modFit_rpart <- train(classe ~.
+                     , data = training
+                     , method = 'rpart'
+                     , trControl = trainControl(method = "cv", number = 5)
+                      )
+modFit_rpart
+```
+
+```{r, echo = TRUE}
+fancyRpartPlot(modFit_rpart$finalModel)
+```
+
+Predict outcomes using validation set
+```{r, echo = TRUE}
+pred_rpart <- predict(modFit_rpart, validation)
+conf_rpart <- confusionMatrix(pred_rpart, validation$classe)
+conf_rpart
+```
+
+In which we can see the total accuracy of classification trees algorithm is:
+```{r, echo = TRUE}
+conf_rpart$overall[1]
+```
+which is not quite good, indicating the classification trees is nog a good model to predict outcome `classe`.
+
+### 3.2 Random Forest
+
+We try alternative algorithm, the random forest
+
+```{r, echo = TRUE}
+# caution: it takes about 7 minutes in my PC, be patient
+modFit_rf <- train(classe ~.
+                   , data = training
+                   , method = 'rf'
+                   , trControl = trainControl(method = 'cv', number = 5)    
+)
+modFit_rf
+```
+
+Predict outcomes using validation set
+```{r, echo = TRUE}
+pred_rf <- predict(modFit_rf, validation)
+conf_rf <- confusionMatrix(pred_rf, validation$classe)
+conf_rf
+```
+
+In which we can see the total accuracy of random forest algorithm is:
+```{r, echo = TRUE}
+conf_rf$overall[1]
+```
+which indicates that random forest is a good model to predict outcome `classe`
+
+### 4. Prediction on Testing set
+```{r, echo = TRUE}
+predict(modFit_rf, testing)
+```

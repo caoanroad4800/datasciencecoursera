@@ -26,7 +26,7 @@ The problem is: when i try to install libcur3, all R packages have to be removed
 
 - Links for compiled project files on GitHub
 
-https://github.com/caoanroad4800/
+https://github.com/caoanroad4800/datasciencecoursera/tree/master/09_Developing_Data_Products/course_project
 
 ## Data
 

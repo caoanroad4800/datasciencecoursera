@@ -1,0 +1,46 @@
+---
+title: 'Course Project: Shiny Application and Reproducible Pitch'
+author: "Yanyuan Zhu"
+date: "9/5/2020"
+output: ioslides_presentation
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = FALSE)
+```
+
+## Introduction
+
+Diamond Data Analysis Report enabled developing data products using shiny apps being embeded within RMarkDown.
+
+Using PageUp and PageDown keys all the slides can be traversed.
+
+## Overview
+
+- Links for the Application
+
+**I failed to upload my shiny app into shinyapps.io due to the error, which happened when I tried to connect my Rstudio to shinyapps.io**
+```{r echo=FALSE}
+Error in dyn.load(file, DLLpath = DLLpath, ...) : 
+  unable to load shared object '/home/yanyuan/R/x86_64-pc-linux-gnu-library/4.0/curl/libs/curl.so':
+  /usr/lib/x86_64-linux-gnu/libcurl.so.4: version `CURL_OPENSSL_3' not found (required by /home/yanyuan/R/x86_64-pc-linux-gnu-library/4.0/curl/libs/curl.so)
+```
+The problem is: when i try to install libcur3, all R packages have to be remove.
+
+- Links for compiled project files on GitHub
+
+https://github.com/BenKarmay/Peer-graded-Assignment-Course-Project-Shiny-Application-and-Reproducible-Pitch
+
+## Data
+
+Dataset `diamons` from `ggplot2` package
+
+```{r, echo=TRUE}
+library("ggplot2")
+dim(diamonds)
+```
+
+```{r, echo = TRUE}
+head(diamonds)
+```
+

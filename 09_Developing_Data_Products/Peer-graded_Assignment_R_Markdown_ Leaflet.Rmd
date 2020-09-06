@@ -2,7 +2,7 @@
 title: "Developing Data Products - Week 2 Assignment"
 #author: "Yanyuan Zhu"
 date: "9/5/2020"
-output: html_document
+output: ioslides_presentation
 ---
 
 ## Introduction

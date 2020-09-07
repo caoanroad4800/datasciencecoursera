@@ -1,0 +1,32 @@
+---
+title: "Plotly"
+author: "Yanyuan Zhu"
+date: "9/7/2020"
+output: ioslides_presentation
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = FALSE)
+library(plotly)
+```
+## Introduction
+- Create a web page presentation using R Markdown that features a plot created with Plotly. 
+- Host your webpage on either GitHub Pages, RPubs, or NeoCities. 
+- Your webpage must contain the date that you created the document, and it must contain a plot created with Plotly. We would love to see you show off your creativity! 
+
+## Introduction
+
+- The URL presentation of R Markdown is
+
+
+- The generated html URL is
+
+
+
+## Scatterplot Color
+```{r, echo = FALSE, message=FALSE}
+plot_ly(mtcars, x = mtcars$wt, y = mtcars$mpg, 
+        mode = 'markers', color = as.factor(mtcars$cyl))
+```
+
+

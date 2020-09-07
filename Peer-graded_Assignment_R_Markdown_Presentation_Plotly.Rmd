@@ -18,7 +18,7 @@ library(plotly)
 
 - The URL presentation of R Markdown is
 
-<a href="https://github.com/caoanroad4800/datasciencecoursera/blob/master/09_Developing_Data_Products/Peer-graded_Assignment_R_Markdown_Leaflet.Rmd">https://github.com/caoanroad4800/datasciencecoursera/blob/master/09_Developing_Data_Products/Peer-graded_Assignment_R_Markdown_Leaflet.Rmd</a>
+<a href = "https://caoanroad4800.github.io/datasciencecoursera/Peer-graded_Assignment_R_Markdown_Presentation_Plotly.Rmd">https://caoanroad4800.github.io/datasciencecoursera/Peer-graded_Assignment_R_Markdown_Presentation_Plotly.Rmd</a>
 
 - The generated html URL is
 

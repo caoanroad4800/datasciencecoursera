@@ -28,7 +28,7 @@ The application uses english text data collected by SwiftKey.
 ## Performance
 - Data source: 2.5 million of text lines, with size of 550 Mbs, including blogs, tiwtters, and news
 
--Sampling: takes 10% random lines to calculate frequency tables with the combination of 2, 3, and 4 words
+- Sampling: takes 10% random lines to calculate frequency tables with the combination of 2, 3, and 4 words
 
 - Time: the app requires about 0.3 seconds to search the next word in the frequency table
 
@@ -36,8 +36,26 @@ The application uses english text data collected by SwiftKey.
 
 - The shiny application is hosted on
 
-https://caoanroad4800.shinyapps.io/Next_Word/?_ga=2.153146106.359334151.1600678578-569701087.1599292557
+https://caoanroad4800.shinyapps.io/Next_Word/
 
 - And souce code is hosted on
 
+https://github.com/caoanroad4800/datasciencecoursera/tree/master/10_Capstone_Project/Next_Word
 
+- This final report is hosted on
+
+https://caoanroad4800.github.io/datasciencecoursera/Final_Report.html
+
+## How to use the application
+
+- Open the application webpage, enter the sentence you want, and the app shows the next word that is of your interest.
+
+```{r, echo=FALSE, fig.cap="Application Use Introduction", out.width = '50%'}
+knitr::include_graphics("./figures/app_UI.png")
+```
+
+## 
+
+```{r, echo=FALSE, out.width = '100%'}
+knitr::include_graphics("./figures/thanks.jpg")
+```

@@ -43,12 +43,7 @@ https://caoanroad4800.shinyapps.io/Next_Word/
 https://github.com/caoanroad4800/datasciencecoursera/tree/master/10_Capstone_Project/Next_Word
 
 - This final report is hosted on
-
-<<<<<<< HEAD
 https://caoanroad4800.github.io/datasciencecoursera/Final_Report.html
-=======
-<>
->>>>>>> 5727f7fab41a2f9f247dd0897bc8cf8cd7595946
 
 ## How to use the application
 

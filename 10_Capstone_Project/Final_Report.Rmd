@@ -1,0 +1,43 @@
+---
+title: "Predicting Next Word in a Sentence"
+author: "Yanyuan Zhu"
+date: "9/21/2020"
+output: ioslides_presentation
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = FALSE)
+```
+
+## Introduction
+
+The application **Predicting Next Word in a Sentence** aims at showing the model of NLP created during the Data Science Capstone Project course.
+
+The course is developed by the Johns Hopkins University, avaiable in Coursera.org
+
+The application uses english text data collected by SwiftKey.
+
+## NLP Model
+
+- **Predict Next Word** of a sentence, using the distribution frequency of 2, 3, and 4 grams
+
+- The frequency is calculated using the **english text data from SwiftKey**
+
+- In case no result is found by the model, it outputs a "it"
+
+## Performance
+- Data source: 2.5 million of text lines, with size of 550 Mbs, including blogs, tiwtters, and news
+
+-Sampling: takes 10% random lines to calculate frequency tables with the combination of 2, 3, and 4 words
+
+- Time: the app requires about 0.3 seconds to search the next word in the frequency table
+
+## Application
+
+- The shiny application is hosted on
+
+https://caoanroad4800.shinyapps.io/Next_Word/?_ga=2.153146106.359334151.1600678578-569701087.1599292557
+
+- And souce code is hosted on
+
+

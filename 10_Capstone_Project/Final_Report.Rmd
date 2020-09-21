@@ -44,7 +44,11 @@ https://github.com/caoanroad4800/datasciencecoursera/tree/master/10_Capstone_Pro
 
 - This final report is hosted on
 
+<<<<<<< HEAD
 https://caoanroad4800.github.io/datasciencecoursera/Final_Report.html
+=======
+<>
+>>>>>>> 5727f7fab41a2f9f247dd0897bc8cf8cd7595946
 
 ## How to use the application
 
@@ -54,7 +58,11 @@ https://caoanroad4800.github.io/datasciencecoursera/Final_Report.html
 knitr::include_graphics("./figures/app_UI.png")
 ```
 
+<<<<<<< HEAD
 ## 
+=======
+## Thanks
+>>>>>>> 5727f7fab41a2f9f247dd0897bc8cf8cd7595946
 
 ```{r, echo=FALSE, out.width = '100%'}
 knitr::include_graphics("./figures/thanks.jpg")

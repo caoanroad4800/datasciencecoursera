@@ -11,11 +11,11 @@ knitr::opts_chunk$set(echo = FALSE)
 
 ## Introduction
 
-The application **Predicting Next Word in a Sentence** aims at showing the model of NLP created during the Data Science Capstone Project course.
+- The application **Predicting Next Word in a Sentence** aims at showing the model of NLP created during the Data Science Capstone Project course.
 
-The course is developed by the Johns Hopkins University, avaiable in Coursera.org
+- The course is developed by the Johns Hopkins University, avaiable in Coursera.org
 
-The application uses english text data collected by SwiftKey.
+- The application uses english text data collected by SwiftKey.
 
 ## NLP Model
 
@@ -43,6 +43,7 @@ https://caoanroad4800.shinyapps.io/Next_Word/
 https://github.com/caoanroad4800/datasciencecoursera/tree/master/10_Capstone_Project/Next_Word
 
 - This final report is hosted on
+
 https://caoanroad4800.github.io/datasciencecoursera/Final_Report.html
 
 ## How to use the application
@@ -53,11 +54,8 @@ https://caoanroad4800.github.io/datasciencecoursera/Final_Report.html
 knitr::include_graphics("./figures/app_UI.png")
 ```
 
-<<<<<<< HEAD
+
 ## 
-=======
-## Thanks
->>>>>>> 5727f7fab41a2f9f247dd0897bc8cf8cd7595946
 
 ```{r, echo=FALSE, out.width = '100%'}
 knitr::include_graphics("./figures/thanks.jpg")
